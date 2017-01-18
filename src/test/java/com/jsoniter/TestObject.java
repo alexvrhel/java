@@ -4,6 +4,7 @@ import com.jsoniter.annotation.JsonProperty;
 import com.jsoniter.annotation.JsoniterAnnotationSupport;
 import com.jsoniter.any.Any;
 import com.jsoniter.fuzzy.MaybeEmptyArrayDecoder;
+import com.jsoniter.fuzzy.MaybeStringIntDecoder;
 import com.jsoniter.spi.EmptyExtension;
 import com.jsoniter.spi.JsonException;
 import com.jsoniter.spi.JsoniterSpi;
@@ -227,5 +228,22 @@ public class TestObject extends TestCase {
     public void test_private_ref() throws IOException {
         TestObject7 obj = JsonIterator.deserialize("{}", TestObject7.class);
         assertNull(obj.field1);
+    }
+
+    public static class TestObject8 {
+        @JsonProperty(decoder = MaybeStringIntDecoder.class)
+        public Object field1;
+    }
+
+    public void test_string_int_decoder_with_int() {
+        JsoniterAnnotationSupport.enable();
+        TestObject8 obj = JsonIterator.deserialize("{\"field1\":\"1\"}", TestObject8.class);
+        assertEquals(obj.field1, (Integer) 1);
+    }
+
+   public void test_string_int_decoder_with_string() {
+        JsoniterAnnotationSupport.enable();
+        TestObject8 obj = JsonIterator.deserialize("{\"field1\":\"1\"}", TestObject8.class);
+        assertEquals(obj.field1, (Integer) 1);
     }
 }
