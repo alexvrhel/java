@@ -47,6 +47,9 @@ public class Slice {
 
     @Override
     public final boolean equals(Object o) {
+        if (!(o instanceof Slice)) {
+            return false;
+        }
         Slice slice = (Slice) o;
         if ((tail - head) != (slice.tail - slice.head)) return false;
         for (int i = head, j = slice.head; i < tail; i++, j++)
